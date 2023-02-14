@@ -150,12 +150,21 @@ resource "aws_security_group" "sg_1" {
   }
 }
 
-resource "aws_security_group_rule" "all_allow" {
+resource "aws_security_group_rule" "all_allow_inbound" {
   type = "ingress"
   from_port = 0
   to_port = 0
   protocol = "-1"
-  cidr_blocks = [ aws_vpc.my_vpc.cidr_block ]
+  cidr_blocks = [ "0.0.0.0/0" ]
+  security_group_id = aws_security_group.sg_1.id
+}
+
+resource "aws_security_group_rule" "all_allow_outbound" {
+  type = "egress"
+  from_port = 0
+  to_port = 0
+  protocol = "-1"
+  cidr_blocks = [ "0.0.0.0/0" ]
   security_group_id = aws_security_group.sg_1.id
 }
 
@@ -166,6 +175,8 @@ resource "aws_security_group_rule" "all_allow" {
 
 module "public_ec2_1" {
   source = "./my_module"
+
+  instance_name = "public_ec2_1"
 
   port_num = 3000
   sg_id = aws_security_group.sg_1.id
@@ -180,6 +191,8 @@ module "public_ec2_1" {
 module "private_ec2_1" {
   source = "./my_module"
 
+instance_name = "private_ec2_1"  
+
   port_num = 3001
   sg_id = aws_security_group.sg_1.id
   subnet_id = aws_subnet.subnet_prv_1.id
@@ -190,3 +203,7 @@ module "private_ec2_1" {
   ]  
 }
 
+#  output
+output "public_ec2_ip_addr" {
+  value = module.public_ec2_1.public_ip_address
+}

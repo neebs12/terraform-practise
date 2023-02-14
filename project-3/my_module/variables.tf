@@ -15,4 +15,10 @@ variable "sg_id" {
 variable "subnet_id" {
   type = string
   description = "subnet id for compute"
+  
+}
+
+variable "instance_name" {
+  type = string
+  description = "name for ec2 instance"
 }
