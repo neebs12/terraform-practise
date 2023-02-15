@@ -15,3 +15,6 @@ This project consists of:
   - 1 ec2 private (so assigned in a private subnet)
 
 ## Description of project
+
+- with IP address of the public ec2 instance, we can can make a request/response to it with a :3000
+- when connecting to public ec2 instance, it can communicate with the private ec2 instance via the private ip address, as it is with the same vpc.
